@@ -6,17 +6,20 @@ from bson import ObjectId
 from .forms import TodoForm
 from application import db
 from datetime import datetime
+import ssl
+print(ssl.OPENSSL_VERSION)
 
 
 @app.route("/")
 def get_todos():
     todos = []
+    print(db)
     for todo in db.todos_flask.find().sort("date_created", -1):
         todo["_id"] = str(todo["_id"])
         todo["date_created"] = todo["date_created"].strftime("%b %d %Y %H:%M:%S")
         todos.append(todo)
 
-    return render_template("view_todos.html", todos = todos)
+    return render_template("view_todo.html", todos = todos)
     
 
 @app.route("/add_todo", methods = ['POST', 'GET'])
